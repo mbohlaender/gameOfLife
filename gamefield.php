@@ -41,17 +41,17 @@ class GameField
 			$_row=10;
 
 		}
-		if($_row>20)
+		if($_row>40)
 		{
-			$_row=20;
+			$_row=40;
 		}
 		if($_column < 10)
 		{
 			$_column=10;
 		}
-		if($_column>40)
+		if($_column>20)
 		{
-			$_column=40;
+			$_column=20;
 		}
 		for($i=0;$i<$_row;$i++)
 		{
@@ -104,7 +104,7 @@ class GameField
 
 	public function readFormsOutOfTxtInArray()
 	{
-		$rowArray = file ("form/hour.txt",FILE_IGNORE_NEW_LINES);
+		$rowArray = file ("form/bipole.txt",FILE_IGNORE_NEW_LINES);
 		for($i=0;$i<count($rowArray);$i++)
 		{
 			$tempString = $rowArray[$i];

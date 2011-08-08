@@ -35,8 +35,6 @@ class JpegOutput extends baseoutput
 		$textColor = ImageColorAllocate ($this->image, 0, 0, 0);
 		$schwarz = ImageColorAllocate ($this->image, 0, 0, 0);
 		$weiss = ImageColorAllocate ($this->image, 255, 255, 255);
-		echo "Zeilen: ".$_gf->rowsOfGameField()."\n";
-		echo "Spalten: ".$_gf->columnsOfGameField()."\n";
 		for($i=0;$i<$_gf->rowsOfGameField();$i++)
 		{
 
