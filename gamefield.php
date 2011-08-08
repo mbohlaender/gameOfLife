@@ -6,7 +6,8 @@
  * @version $Id$
  * @copyright 2011
  */
-class GameField{
+class GameField
+{
 
 	private $gameFieldArray;
 
