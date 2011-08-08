@@ -5,8 +5,10 @@
  *
  * @version $Id$
  * @copyright 2011
+ * @author Marcel Bohländer
  */
-class GameField{
+class GameField
+{
 
 	private $gameFieldArray;
 
