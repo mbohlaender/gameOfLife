@@ -20,6 +20,7 @@ class Simulator{
 	function countDeadOrAliveCells($_row,$_column)
 	{
 		$tempArray = $this->gamefield->neighborCells($_row,$_column);
+
 		$statisticArray;
 		$tempAlive=0;
 		$tempDead=0;
@@ -29,19 +30,19 @@ class Simulator{
 			{
 				if($tempArray[$i][$j]=="A")
 				{
-					$tempAlive++;
+		   		$tempAlive++;
 				}
 				if($tempArray[$i][$j]==" ")
 				{
 					$tempDead++;
 				}
-			}
+		   }
 		}
+
 		$statisticArray[0]=$tempAlive;
 		$statisticArray[1]=$tempDead;
 		return $statisticArray;
 	}
-
 	function checkDeadOrAlive($_row,$_column)
 	{
 		$tempArray = $this->gamefield->gameFieldArray();

@@ -13,12 +13,16 @@ require "consoleoutput.php";
 
 
 $gamefield = new Gamefield();
-$gamefield->setGamefield(40,20);
-$gamefield->readFormsOutOfTxtInArray();
 $simulator = new Simulator($gamefield);
+
+
+$gamefield->setGamefield(20,40);
+$gamefield->readFormsOutOfTxtInArray();
 //$output=new ConsoleOutput();
+
 $output = new JpegOutput();
 $output->setName("Test");
+
 for($i=0;$i<10;$i++)
 {
 	$output->setCounter($i+1);
@@ -27,8 +31,6 @@ for($i=0;$i<10;$i++)
 }
 
 
-//
-//$jpegcreator->imagejpeg();
 
 
 

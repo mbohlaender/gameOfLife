@@ -8,15 +8,15 @@
  */
 class GameField{
 
-	public $gameFieldArray;
+	private $gameFieldArray;
 
 	function __construct($_gameFieldArray=array(
-												array(" "," ","A"," "," "),
-												array("A","A"," "," "," "),
-												array(" "," ","A","A"," "),
-												array(" ","A"," "," "," "),
-												array(" "," "," "," "," ")
-												))
+		array(" "," ","A"," "," "),
+		array("A","A"," "," "," "),
+		array(" "," ","A","A"," "),
+		array(" ","A"," "," "," "),
+		array(" "," "," "," "," ")
+		))
 	{
 		$this->gameFieldArray=$_gameFieldArray;
 	}
@@ -39,17 +39,17 @@ class GameField{
 			$_row=10;
 
 		}
-		if($_row>40)
+		if($_row>20)
 		{
-			$_row=40;
+			$_row=20;
 		}
 		if($_column < 10)
 		{
 			$_column=10;
 		}
-		if($_column>20)
+		if($_column>40)
 		{
-			$_column=20;
+			$_column=40;
 		}
 		for($i=0;$i<$_row;$i++)
 		{
@@ -60,9 +60,21 @@ class GameField{
 		}
 	}
 
-	public function setGamefieldCell($_row,$_column,$_dca)
+	public function setGamefieldCell($_row,$_column,$_doa)
 	{
-		$this->gameFieldArray[$_row][$_column]=$_dca;
+		$this->gameFieldArray[$_row][$_column]=$_doa;
+	}
+
+	public function countA()
+	{
+		for($k=0;$k<40;$k++)
+		{
+			for($j=0;$j<20;$j++)
+			{
+				if ($this->gameFieldArray[$k][$j] == "A") echo "A".$k.'-'.$j;
+			}
+		}
+		echo "\n";
 	}
 
 	/**
@@ -87,21 +99,20 @@ class GameField{
 			return "dead";
 		}
 	}
+
 	public function readFormsOutOfTxtInArray()
 	{
-
-		$handle = fopen ("form/hour.txt", "r");
-		$rowArray = file ("form/hour.txt");
- 		$counter=0;
-		foreach ($rowArray as $row)
+		$rowArray = file ("form/hour.txt",FILE_IGNORE_NEW_LINES);
+		for($i=0;$i<count($rowArray);$i++)
 		{
-			$this->setGamefieldCell($rowArray[$counter],$rowArray[$counter+1],"A");
-			$counter=$counter+2;
+			$tempString = $rowArray[$i];
+			$coords =explode(" ",$tempString,2);
+			$this->setGamefieldCell($coords[0],$coords[1],"A");
 		}
-
-		fclose($handle);
 	}
-	public function gameFieldArray(){
+
+	public function gameFieldArray()
+	{
 		return $this->gameFieldArray;
 	}
 	/**
@@ -144,13 +155,7 @@ class GameField{
 		return $neighborHoodPlaces;
 	}
 
-	/**
-	 * Return whether the delivered Cell is dead or alive
-	 *
-	 * @param mixed $_row
-	 * @param mixed $_column
-	 * @return bool true for alive, false for dead
-	 */
+
 
 
 
