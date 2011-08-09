@@ -102,17 +102,6 @@ class GameField
 		}
 	}
 
-	public function readFormsOutOfTxtInArray()
-	{
-		$rowArray = file ("form/bipole.txt",FILE_IGNORE_NEW_LINES);
-		for($i=0;$i<count($rowArray);$i++)
-		{
-			$tempString = $rowArray[$i];
-			$coords =explode(" ",$tempString,2);
-			$this->setGamefieldCell($coords[0],$coords[1],"A");
-		}
-	}
-
 	public function gameFieldArray()
 	{
 		return $this->gameFieldArray;
