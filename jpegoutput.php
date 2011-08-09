@@ -31,11 +31,11 @@ class JpegOutput extends baseoutput
 	{
 		echo "Test\n";
 		$this->gamefieldArray=$_gf->gameFieldArray();
-		$this->image = @ImageCreate (400, 200);
+		$this->image = @ImageCreate ($_gf->columnsOfGameField()*10,$_gf->rowsOfGameField()*10);
 		$backgroundColor = ImageColorAllocate ($this->image, 255, 255, 255);
 		$textColor = ImageColorAllocate ($this->image, 0, 0, 0);
-		$schwarz = ImageColorAllocate ($this->image, 0, 0, 0);
-		$weiss = ImageColorAllocate ($this->image, 255, 255, 255);
+		$black = ImageColorAllocate ($this->image, 0, 0, 0);
+		$white = ImageColorAllocate ($this->image, 255, 255, 255);
 		for($i=0;$i<$_gf->rowsOfGameField();$i++)
 		{
 
@@ -44,11 +44,11 @@ class JpegOutput extends baseoutput
 
 				if($_gf->checkDeadOrAlive($i,$j)=="alive")
 				{
-					$this->drawRectangle($i*10,$j*10 ,$i*10+10,$j*10+10 ,$schwarz);
+					$this->drawRectangle($i*10,$j*10,$i*10+10,$j*10+10 ,$black);
 				}
 				else
 				{
-					$this->drawFilledRectangle($i*10,$j*10 ,$i*10+10,$j*10+10  ,$schwarz);
+					$this->drawFilledRectangle($i*10,$j*10 ,$i*10+10,$j*10+10  ,$black);
 				}
 
 			}
