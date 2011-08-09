@@ -18,6 +18,11 @@ abstract class BaseOutput
 
 	abstract function outputGamefield(gameField $_gf);
 
+	function finishOutput()
+	{
+		return true;
+	}
+
 
 	function setName($_name)
 	{
