@@ -21,14 +21,14 @@ class GifOutput extends baseoutput
 		{
 			mkdir("img");
 		}
-		$im   = imageCreateTrueColor (400, 200);
+		$im   = imageCreateTrueColor ($_gf->columnsOfGameField()*10,$_gf->rowsOfGameField()*10);
 
 		$black = imagecolorallocate($im,   0,   0,   0);
 		$white = imagecolorallocate($im, 255, 255, 255);
 		$red   = imagecolorallocate($im, 255,   0,   0);
 		$green = imagecolorallocate($im,   0, 128,   0);
 
-		imagefilledrectangle ($im, 0, 0, 400, 200, IMG_COLOR_TILED);
+		imagefilledrectangle ($im, 0, 0, $_gf->columnsOfGameField()*10,$_gf->rowsOfGameField()*10, IMG_COLOR_TILED);
 		for($i=0;$i<$_gf->rowsOfGameField();$i++)
 		{
 
@@ -37,7 +37,7 @@ class GifOutput extends baseoutput
 
 				if($_gf->checkDeadOrAlive($i,$j)=="alive")
 				{
-					imagefilledrectangle($im,$i*10,$j*10 ,$i*10+10,$j*10+10 ,$white);
+					imagefilledrectangle($im,$i*10+1,$j*10+1 ,$i*10+9,$j*10+9 ,$white);
 				}
 
 			}
@@ -56,7 +56,7 @@ class GifOutput extends baseoutput
 		$startTime = microtime(true);
 
 		$this->gif->setLoop(0);                         # Loop forever
-		$this->gif->setDefaultConfig('delay_ms', '40'); # Delay: 10ms
+		$this->gif->setDefaultConfig('delay_ms', '20'); # Delay: 10ms
 		if(isset($_GET['transparent']))
 			$this->gif->setDefaultConfig('transparent_color', 0);
 
