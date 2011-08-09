@@ -41,17 +41,17 @@ class GameField
 			$_row=10;
 
 		}
-		if($_row>40)
+		if($_row>100)
 		{
-			$_row=40;
+			$_row=100;
 		}
 		if($_column < 10)
 		{
 			$_column=10;
 		}
-		if($_column>20)
+		if($_column>100)
 		{
-			$_column=20;
+			$_column=100;
 		}
 		for($i=0;$i<$_row;$i++)
 		{
