@@ -4,7 +4,9 @@ require "simulator.php";
 require "gamefield.php";
 require "jpegoutput.php";
 require "consoleoutput.php";
+require "txtinput.php";
 require_once("gifoutput.php");
+
 /**
  * Game of Life.
  *
@@ -12,21 +14,21 @@ require_once("gifoutput.php");
  * @copyright 2011
  */
 
-
 $gamefield = new Gamefield();
 $simulator = new Simulator($gamefield);
+$gamefield->setGamefield(20,20);
 
+$input = new TxtInput();
+$input->setFilename("spaceship");
+$input->readIntoGamefield($gamefield);
 
-$gamefield->setGamefield(40,40);
-$gamefield->readFormsOutOfTxtInArray();
-//$output=new ConsoleOutput();
-
-$output = new GifOutput();
-//$output->setName("Test");
-
+//$output = new GifOutput();
+$output = new JpegOutput();
+$output->setName("animation");
+//$output = new ConsoleOutput();
 for($i=0;$i<10;$i++)
 {
-	//$output->setCounter($i+1);
+	$output->setCounter($i+1);
 	$output->outputGamefield($gamefield);
 	$simulator->simulation();
 
