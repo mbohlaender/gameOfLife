@@ -29,6 +29,7 @@ class JpegOutput extends baseoutput
 
 	function outputGameField(gameField $_gf)
 	{
+		echo "Test\n";
 		$this->gamefieldArray=$_gf->gameFieldArray();
 		$this->image = @ImageCreate (400, 200);
 		$backgroundColor = ImageColorAllocate ($this->image, 255, 255, 255);
