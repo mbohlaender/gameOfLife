@@ -16,10 +16,10 @@ require_once("gifoutput.php");
 
 $gamefield = new Gamefield();
 $simulator = new Simulator($gamefield);
-$gamefield->setGamefield(20,20);
+$gamefield->setGamefield(10,10);
 
 $input = new TxtInput();
-$input->setFilename("spaceship");
+$input->setFilename("blinker");
 $input->readIntoGamefield($gamefield);
 
 //$output = new GifOutput();
