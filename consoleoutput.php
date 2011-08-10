@@ -12,11 +12,11 @@ class ConsoleOutput extends BaseOutput
 {
 	  function outputGameField(gameField $_gf)
 	  {
+	  	$tempArray = $_gf->gameFieldArray();
 	  	$tempString="";
-	  	$tempArray=$_gf->gameFieldArray();
-	  	for($i=0;$i<count($_gf->gameFieldArray());$i++)
+	  	for($i=0;$i<$_gf->rowsOfGameField();$i++)
 	  	{
-	  		for($j=0;$j<count($_gf->gameFieldArray());$j++)
+	  		for($j=0;$j<$_gf->columnsOfGameField();$j++)
 	  		{
 	  			$tempString = $tempString.$tempArray[$i][$j]."|";
 	  		}
