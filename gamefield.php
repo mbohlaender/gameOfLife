@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Build the gamefield.
  *
  * @version $Id$
  * @copyright 2011
@@ -42,6 +42,14 @@ class GameField
 	{
 		return count($this->gameFieldArray);
 	}
+
+	/**
+	 * Creates a gamefield-array with given rows and columns
+	 *
+	 * @param mixed $_row
+	 * @param mixed $_column
+	 * @return
+	 */
 	public function setGamefield($_row,$_column)
 	{
 		if($_row < 20)
@@ -70,25 +78,26 @@ class GameField
 		}
 	}
 
+	/**
+	 * Fill at a specific point the array
+	 *
+	 * @param mixed $_row
+	 * @param mixed $_column
+	 * @param mixed $_doa
+	 * @return
+	 */
 	public function setGamefieldCell($_row,$_column,$_doa)
 	{
 		$this->gameFieldArray[$_row][$_column]=$_doa;
 	}
 
-	public function countA()
-	{
-		for($k=0;$k<40;$k++)
-		{
-			for($j=0;$j<20;$j++)
-			{
-				if ($this->gameFieldArray[$k][$j] == "A") echo "A".$k.'-'.$j;
-			}
-		}
-		echo "\n";
-	}
-
-
-
+	/**
+	 * Check a given cell for dead or alive
+	 *
+	 * @param mixed $_row
+	 * @param mixed $_column
+	 * @return String alive or dead
+	 */
 	public function checkDeadOrAlive($_row,$_column)
 	{
 		$tempArray = $this->gameFieldArray();
@@ -102,12 +111,17 @@ class GameField
 		}
 	}
 
+	/**
+	 * GameField::gameFieldArray()
+	 *
+	 * @return array gamefield
+	 */
 	public function gameFieldArray()
 	{
 		return $this->gameFieldArray;
 	}
 	/**
-	 * Gives in an array the coordinates from the neighbor cells back
+	 * Gives the neighbor cells with their status
 	 *
 	 * @param int $_row
 	 * @param int $_column
