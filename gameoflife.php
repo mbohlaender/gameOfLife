@@ -2,10 +2,10 @@
 
 require "simulator.php";
 require "gamefield.php";
-require "jpegoutput.php";
-require "consoleoutput.php";
-require "txtinput.php";
-require_once("gifoutput.php");
+require "output/jpegoutput.php";
+require "output/consoleoutput.php";
+require "input/txtinput.php";
+require "output/gifoutput.php";
 
 /**
  * Game of Life.
