@@ -37,7 +37,7 @@ class GifOutput extends baseoutput
 
 				if($_gf->checkDeadOrAlive($i,$j)=="alive")
 				{
-					imagefilledrectangle($im,$i*10+1,$j*10+1 ,$i*10+9,$j*10+9 ,$white);
+					imagefilledrectangle($im,$j*10+1,$i*10+1 ,$j*10+9,$i*10+9 ,$white);
 				}
 
 			}
