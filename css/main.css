@@ -1,0 +1,48 @@
+body {
+	background-color: #00FF7F;
+	font-family:Comic Sans MS,Arial;
+}
+
+#form {
+	margin-top:7em;
+	margin-left:15em;
+	background-color:#EE1289;
+	border-width: 3px;
+	border-style:solid;
+	border-color: #79CDCD;
+	border-radius: 5px;
+	float: left;
+	box-shadow: #244766 10px 10px 10px;
+	font-family:Comic Sans MS,Arial;
+}
+
+#imagecontainer {
+	border: 5px solid #79CDCD;
+	border-radius: 5px;
+	margin-top: 5em;
+	margin-left: 10em;
+	float: left;
+	clear: right;
+	box-shadow: #244766 10px 10px 10px;
+}
+input{
+	font-family:Comic Sans MS,Arial;
+	background-color:#79CDCD;
+	margin-left: 4px;
+}
+
+select{
+	font-family:Comic Sans MS,Arial;
+	background-color:#79CDCD;
+	margin-top: 1em;
+	margin-left: 4px;
+}
+h1 {
+	text-align: center;
+	text-shadow: #555 4px 4px 4px;
+	color:#FFFF00;
+	-webkit-box-reflect: below -5px -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.3)));
+}
+submitButton {
+	margin-left: 10em;
+}
