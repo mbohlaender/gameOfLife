@@ -3,7 +3,7 @@
 include_once("baseinput.php");
 
 /**
- *
+ * Read out of a txt file a form for simulation process
  *
  * @version $Id$
  * @copyright 2011
@@ -13,6 +13,12 @@ class TxtInput extends baseinput
 	private $gamefield;
 	private $filename;
 
+	/**
+	 * Sets filename for the file which shall be load
+	 *
+	 * @param mixed $_filename
+	 * @return
+	 */
 	function setFilename($_filename)
 	{
 		if(file_exists("form/".$_filename.".txt"))
@@ -25,6 +31,12 @@ class TxtInput extends baseinput
 		}
 	}
 
+	/**
+	 * Reads the coordinates out of the txt and wrote them into the gamefield-array
+	 *
+	 * @param GameField $_gf
+	 * @return
+	 */
 	function readIntoGamefield(GameField $_gf)
 	{
 		$this->gamefield = $_gf;
