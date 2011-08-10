@@ -3,13 +3,19 @@
 include_once "baseoutput.php";
 
 /**
- *
+ * Gives the simulation process on the console
  *
  * @version $Id$
  * @copyright 2011
  */
 class ConsoleOutput extends BaseOutput
 {
+	  /**
+	   * Gives out the array, for every simulation step a new one
+	   *
+	   * @param gameField $_gf
+	   * @return
+	   */
 	  function outputGameField(gameField $_gf)
 	  {
 	  	$tempArray = $_gf->gameFieldArray();

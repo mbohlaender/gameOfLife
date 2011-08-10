@@ -4,7 +4,7 @@ include_once "baseoutput.php";
 
 
 /**
- *
+ * Build jpgs of every simulation step
  *
  * @version $Id$
  * @copyright 2011
@@ -23,10 +23,13 @@ class JpegOutput extends baseoutput
 	//Width and height of the picture; default =400
 	private $width=400;
 	private $heigth=400;
-	function __JpegOutput(){
 
-	}
-
+	/**
+	 * Build jpgs of every simulation step
+	 *
+	 * @param gameField $_gf
+	 * @return
+	 */
 	function outputGameField(gameField $_gf)
 	{
 		echo "Test\n";
@@ -51,40 +54,49 @@ class JpegOutput extends baseoutput
 		imagejpeg($this->image, "img/".$this->name.$this->counter.".jpg", 100);
 
 	}
-	function drawFilledRectangle($_x1,$_y1,$_x2,$_y2,$_color){
+
+	/**
+	 * Draw a filled rectangle
+	 *
+	 * @param mixed $_x1
+	 * @param mixed $_y1
+	 * @param mixed $_x2
+	 * @param mixed $_y2
+	 * @param mixed $_color
+	 * @return
+	 */
+	function drawFilledRectangle($_x1,$_y1,$_x2,$_y2,$_color)
+	{
 		imagefilledrectangle($this->image, $_x1,$_y1,$_x2,$_y2,$_color);
 	}
-	function drawRectangle($_x1,$_y1,$_x2,$_y2,$_color){
-		imagerectangle($this->image, $_x1,$_y1,$_x2,$_y2,$_color);
-	}
 
-
-
-
+	/**
+	 * Set the names for jpg files
+	 *
+	 * @param mixed $_name
+	 * @return
+	 */
 	function setName($_name)
 	{
 		$this->name=$_name;
 	}
+
+	/**
+	 * Returns the filename
+	 *
+	 * @return String name
+	 */
 	function getName()
 	{
 		return $this->name;
 	}
-	function setWidth($_width)
-	{
-		$this->width=$_width;
-	}
-	function setHeigth($_height)
-	{
-		$this->height=$_height;
-	}
-	function Width()
-	{
-		return $this->width;
-	}
-	function Heigth()
-	{
-		return $this->height;
-	}
+
+	/**
+	 * Counter for picture names
+	 *
+	 * @param mixed $_counter
+	 * @return
+	 */
 	function setCounter($_counter)
 	{
 		$this->counter = $_counter;

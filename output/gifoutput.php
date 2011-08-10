@@ -3,7 +3,7 @@
 include_once "baseoutput.php";
 require_once "/gifCreator/dGifAnimator.inc.php";
 /**
- *
+ * Build animated gif files of the simulation process
  *
  * @version $Id$
  * @copyright 2011
@@ -15,6 +15,12 @@ class GifOutput extends baseoutput
 	private $gif;
 	private $name ="Test";
 
+	/**
+	 * Build frames of every simulation step
+	 *
+	 * @param gameField $_gf
+	 * @return
+	 */
 	function outputGamefield(gameField $_gf)
 	{
 		if(!is_dir("img"))
@@ -46,6 +52,12 @@ class GifOutput extends baseoutput
 		$this->generated[] = $randFilename;
 		imagegif($im, $randFilename);
 	}
+
+	/**
+	 * Build a gif file out of the frames
+	 *
+	 * @return
+	 */
 	function finishOutput()
 	{
 
@@ -74,6 +86,12 @@ class GifOutput extends baseoutput
 		}
 
 	}
+	/**
+	 * Set the name of the gif file
+	 *
+	 * @param mixed $_name
+	 * @return
+	 */
 	function setName($_name)
 	{
 		$this->name=$_name;
