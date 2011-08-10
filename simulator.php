@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Simulates the "game of life" process
  *
  * @version $Id$
  * @copyright 2011
@@ -13,10 +13,22 @@ class Simulator{
 	private $gamefield;
 	private $gamefieldArrays;
 
+	/**
+	 * Simulator::__construct()
+	 *
+	 * @param mixed $_gamefield
+	 */
 	function __construct($_gamefield){
 		$this->gamefield = $_gamefield;
 	}
 
+	/**
+	 * Simulator::countDeadOrAliveCells()
+	 *
+	 * @param int $_row
+	 * @param int $_column
+	 * @return array $statisticArray [0]=living Cells; [1]=dead Cells;
+	 */
 	function countDeadOrAliveCells($_row,$_column)
 	{
 		$tempArray = $this->gamefield->neighborCells($_row,$_column);
@@ -43,19 +55,12 @@ class Simulator{
 		$statisticArray[1]=$tempDead;
 		return $statisticArray;
 	}
-	function checkDeadOrAlive($_row,$_column)
-	{
-		$tempArray = $this->gamefield->gameFieldArray();
-		if($tempArray[$_row][$_column]=="A")
-		{
-			return "alive";
-		}
-		if($tempArray[$_row][$_column]==" ")
-		{
-			return "dead";
-		}
-	}
 
+	/**
+	 * Main function for simulating process, check for game rules
+	 *
+	 *
+	 */
 	function simulation(){
 		$changings;
 		$counter=0;
@@ -65,7 +70,7 @@ class Simulator{
 
 			for($j=0;$j<$this->gamefield->ColumnsOfGameField();$j++)
 			{
-				$deadOrAlive=$this->checkDeadOrAlive($i,$j);
+				$deadOrAlive=$this->gamefield->checkDeadOrAlive($i,$j);
 				$neighbors = $this->countDeadOrAliveCells($i,$j);
 
 				if($deadOrAlive=="dead" && $neighbors[0]==3)
@@ -87,8 +92,6 @@ class Simulator{
 
 			}
 		}
-
-
 		for($k=0;$k<$counter;$k++)
 		{
 			$temp1=$changings[$k][0];
