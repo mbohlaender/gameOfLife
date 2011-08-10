@@ -33,21 +33,29 @@ class GameField
 	{
 		return count($this->gameFieldArray[0]);
 	}
-
+	/**
+	 * gameField::RowsOfGameField()
+	 *
+	 * @return int number of rows
+	 */
+	public function rowsOfGameField()
+	{
+		return count($this->gameFieldArray);
+	}
 	public function setGamefield($_row,$_column)
 	{
-		if($_row < 10)
+		if($_row < 20)
 		{
-			$_row=10;
+			$_row= 20;
 
 		}
 		if($_row>100)
 		{
 			$_row=100;
 		}
-		if($_column < 10)
+		if($_column < 20)
 		{
-			$_column=10;
+			$_column=20;
 		}
 		if($_column>100)
 		{
@@ -79,15 +87,7 @@ class GameField
 		echo "\n";
 	}
 
-	/**
-	 * gameField::RowsOfGameField()
-	 *
-	 * @return int number of rows
-	 */
-	public function rowsOfGameField()
-	{
-		return count($this->gameFieldArray);
-	}
+
 
 	public function checkDeadOrAlive($_row,$_column)
 	{
