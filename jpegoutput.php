@@ -17,7 +17,7 @@ class JpegOutput extends baseoutput
 	private $gamefieldArray=null;
 
 	//For picture number
-	private $counter;
+	private $counter=1;
 	private $image=null;
 
 	//Width and height of the picture; default =400
@@ -31,9 +31,8 @@ class JpegOutput extends baseoutput
 	{
 		echo "Test\n";
 		$this->gamefieldArray=$_gf->gameFieldArray();
-		$this->image = @ImageCreate ($_gf->columnsOfGameField()*10,$_gf->rowsOfGameField()*10);
-		$backgroundColor = ImageColorAllocate ($this->image, 255, 255, 255);
-		$textColor = ImageColorAllocate ($this->image, 0, 0, 0);
+		$this->image = @ImageCreate ($_gf->rowsOfGameField()*10,$_gf->columnsOfGameField()*10);
+		$backgroundColor = ImageColorAllocate ($this->image, 0, 0, 0);
 		$black = ImageColorAllocate ($this->image, 0, 0, 0);
 		$white = ImageColorAllocate ($this->image, 255, 255, 255);
 		for($i=0;$i<$_gf->rowsOfGameField();$i++)
@@ -44,13 +43,8 @@ class JpegOutput extends baseoutput
 
 				if($_gf->checkDeadOrAlive($i,$j)=="alive")
 				{
-					$this->drawRectangle($i*10,$j*10,$i*10+10,$j*10+10 ,$black);
+					$this->drawFilledRectangle($j*10+1,$i*10+1,$j*10+9,$i*10+9 ,$white);
 				}
-				else
-				{
-					$this->drawFilledRectangle($i*10,$j*10 ,$i*10+10,$j*10+10  ,$black);
-				}
-
 			}
 		}
 
