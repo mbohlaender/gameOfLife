@@ -6,8 +6,9 @@
  * @version $Id$
  * @copyright 2011
  */
+require_once("./src/epf/epfgenericplugin.php");
 
-abstract class BaseOutput
+abstract class BaseOutput extends epfGenericPlugin
 {
 
 
@@ -23,8 +24,43 @@ abstract class BaseOutput
 		return true;
 	}
 
+	function setCounter($_counter)
+	{
+
+	}
+
+	function color($_color)
+	{
+
+	}
+	function getColor()
+	{
+
+	}
+
+	function bgColor($_bgColor)
+	{
+
+	}
+	function getBgColor()
+	{
+
+	}
 
 	function setName($_name)
+	{
+
+	}
+
+	function setMs($_ms)
+	{
+
+	}
+	function setColor($_color)
+	{
+
+	}
+	function setBgColor($_bgColor)
 	{
 
 	}
