@@ -29,10 +29,12 @@ class input_txt extends baseinput
 		if(file_exists("form/".$_filename.".txt"))
 		{
 			$this->filename = $_filename;
+			return true;
 		}
 		else
 		{
-		echo "File doesn't exist, check right name\n";
+			echo "File doesn't exist, check right name\n";
+			return false;
 		}
 	}
 
