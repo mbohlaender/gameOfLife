@@ -134,7 +134,7 @@
 		$output->setBgColor( $_GET['selectBgColor']);
 	}
 
-	$output->setName($gifname);
+
 	$gamefield = new Gamefield();
 	$simulator = new Simulator($gamefield);
 	$gamefield->setGamefield($y,$x);
@@ -142,21 +142,39 @@
 	$input->setFilename($filename);
 	$input->readIntoGamefield($gamefield);
 
+	$md5 = md5($x.$y.$output->getColor().$output->getBgColor().$output->getMs().$sim.$filename);
+	$output->setName($md5);
 
-
-	for($i=0;$i<$sim;$i++)
+	foreach (glob("gif/*.gif") as $filename)
 	{
-
-		if($output->comparison()==true)
+		$tempA = explode("/",$filename);
+		$tempB = explode(".",$tempA[1]);
+		if($tempB[0]==$md5)
 		{
+			$gifname=$md5;
+			$bool=true;
+			break;
+		}
+		else $bool=false;
+	}
+	if($bool==false)
+	{
+		for($i=0;$i<$sim;$i++)
+		{
+			if($output->comparison()==true)
+			{
 			$output->setCounter($i+1);
 			$output->outputGamefield($gamefield);
 			$simulator->simulation();
+			}
+			else break;
 		}
-		else break;
-
+		$output->finishOutput();
+		$gifname=$md5;
+		$bool=true;
 	}
-	$output->finishOutput();
+
+
 
 
 
