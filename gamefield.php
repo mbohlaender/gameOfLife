@@ -52,30 +52,35 @@ class GameField
 	 */
 	public function setGamefield($_row,$_column)
 	{
-		if($_row < 20)
+		if(is_numeric($_row) && is_numeric($_column))
 		{
-			$_row= 20;
-
-		}
-		if($_row>100)
-		{
-			$_row=100;
-		}
-		if($_column < 20)
-		{
-			$_column=20;
-		}
-		if($_column>100)
-		{
-			$_column=100;
-		}
-		for($i=0;$i<$_row;$i++)
-		{
-			for($j=0;$j<$_column;$j++)
+			if($_row < 20)
 			{
-				$this->gameFieldArray[$i][$j]=' ';
+				$_row= 20;
+
 			}
+			if($_row>100)
+			{
+				$_row=100;
+			}
+			if($_column < 20)
+			{
+				$_column=20;
+			}
+			if($_column>100)
+			{
+				$_column=100;
+			}
+			for($i=0;$i<(int)$_row;$i++)
+			{
+				for($j=0;$j<(int)$_column;$j++)
+				{
+					$this->gameFieldArray[$i][$j]=' ';
+				}
+			}
+			return true;
 		}
+		else return false;
 	}
 
 	/**
