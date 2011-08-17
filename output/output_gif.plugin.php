@@ -1,6 +1,6 @@
 <?php
 
-include_once "baseoutput.php";
+require_once "baseoutput.php";
 require_once "/gifCreator/dGifAnimator.inc.php";
 /**
  * Build animated gif files of the simulation process
@@ -8,7 +8,7 @@ require_once "/gifCreator/dGifAnimator.inc.php";
  * @version $Id$
  * @copyright 2011
  */
-class output_gif extends baseoutput
+class output_gif extends BaseOutput
 {
 
 	private $generated;
@@ -38,7 +38,15 @@ class output_gif extends baseoutput
 
 	public function setMs($_ms)
 	{
-		$this->ms=$_ms;
+		if(is_numeric($_ms))
+		{
+			$this->ms=(int)$_ms;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	public function getMs()
 	{

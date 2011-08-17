@@ -56,6 +56,10 @@ abstract class BaseOutput extends epfGenericPlugin
 	{
 
 	}
+	function getMs()
+	{
+
+	}
 	function setColor($_color)
 	{
 
