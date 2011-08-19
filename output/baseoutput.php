@@ -29,44 +29,15 @@ abstract class BaseOutput extends epfGenericPlugin
 
 	}
 
-	function color($_color)
-	{
-
-	}
-	function getColor()
-	{
-
-	}
-
-	function bgColor($_bgColor)
-	{
-
-	}
-	function getBgColor()
-	{
-
-	}
 
 	function setName($_name)
 	{
 
 	}
 
-	function setMs($_ms)
+	function setParameters($_deliverString)
 	{
-
-	}
-	function getMs()
-	{
-
-	}
-	function setColor($_color)
-	{
-
-	}
-	function setBgColor($_bgColor)
-	{
-
+		return true;
 	}
 }
 ?>
