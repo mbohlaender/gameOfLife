@@ -159,6 +159,29 @@ class output_jpeg extends baseoutput
 	{
 		return $this->bgColor;
 	}
+	function setParameters($_deliverString)
+	{
+		$paraArray=explode(" ",$_deliverString);
+		for($k=0;$k<count($paraArray);$k++)
+		{
+			if($paraArray[$k]=="--bgcolor" || $paraArray[$k]=="-b")
+			{
+				if($this->setBgColor($paraArray[$k+1])==true){}
+				else
+				{
+					return false;
+				}
+			}
+			if($paraArray[$k]=="--color" || $paraArray[$k]=="-c")
+			{
+				if($this->setColor($paraArray[$k+1])==true){}
+				else
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
-
 ?>

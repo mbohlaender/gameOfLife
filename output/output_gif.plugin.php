@@ -33,7 +33,6 @@ class output_gif extends BaseOutput
 		$this->color[1]=255;
 		$this->color[2]=255;
 		$this->color[3]=255;
-
 	}
 
 	public function setMs($_ms)
@@ -188,6 +187,39 @@ class output_gif extends BaseOutput
 	function getBgColor()
 	{
 		return $this->bgColor;
+	}
+	function setParameters($_deliverString)
+	{
+		$paraArray=explode(" ",$_deliverString);
+		for($k=0;$k<count($paraArray);$k++)
+		{
+			if($paraArray[$k]=="--bgcolor" || $paraArray[$k]=="-b")
+			{
+				if($this->setBgColor($paraArray[$k+1])==true){}
+				else
+				{
+					return false;
+				}
+			}
+			if($paraArray[$k]=="--color" || $paraArray[$k]=="-c")
+			{
+				if($this->setColor($paraArray[$k+1])==true){}
+				else
+				{
+					return false;
+				}
+			}
+			if($paraArray[$k] == "--speed" || $paraArray[$k] == "-s")
+			{
+				if($this->setMs($paraArray[$k+1])==true){}
+				else
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+
 	}
 }
 ?>
