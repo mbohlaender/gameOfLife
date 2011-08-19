@@ -13,8 +13,8 @@ require_once ("src/epf/epfpluginmanager.php");
 
 $gamefield = new Gamefield();
 $simulator = new Simulator($gamefield);
-
 $epfPManager = new epfPluginManager();
+
 $in = "txt";
 $out = "gif";
 $speed=10;
@@ -24,11 +24,32 @@ $y=20;
 $form="blinker";
 $bgcolor="Black";
 $color="White";
+$deliverString="";
 
+
+$lines = preg_split("/-/", implode(" ",$argv), -1, PREG_SPLIT_NO_EMPTY);
+$parameterArray = file ("help/parameterlist.txt",FILE_IGNORE_NEW_LINES);
+$counter=1;
+for($z=1;$z<count($lines);$z++)
+{
+	$tempS = explode(" ",$lines[$z]);
+	for($q=0;$q<count($parameterArray);$q++)
+	{
+		if($tempS[0]==$parameterArray[$q]) ;
+		else $counter++;
+	}
+	if($counter!=count($parameterArray))
+	{
+		echo "Parameter ".$tempS[0]." is invalid, will continue with right parameters, check help.\n";
+	}
+	$counter=1;
+}
 if($argc > 1)
 {
 	for($i=0;$i<$argc;$i++)
 	{
+		$deliverString=$deliverString." ".$argv[$i];
+
 		if($argv[$i] == "--in" || $argv[$i] == "-i")
 		{
 			$in=$argv[$i+1];
@@ -45,10 +66,7 @@ if($argc > 1)
 		{
 			$y=$argv[$i+1];
 		}
-		if($argv[$i] == "--speed" || $argv[$i] == "-s")
-		{
-			$speed=$argv[$i+1];
-		}
+
 		if($argv[$i] == "--reps" || $argv[$i] == "-r")
 		{
 			$reps=$argv[$i+1];
@@ -57,14 +75,8 @@ if($argc > 1)
 		{
 			$form=$argv[$i+1];
 		}
-		if($argv[$i]=="--bgcolor" || $argv[$i]=="-b")
-		{
-			$bgcolor=$argv[$i+1];
-		}
-		if($argv[$i]=="--color" || $argv[$i]=="-c")
-		{
-			$color=$argv[$i+1];
-		}
+
+
 		if($argv[$i]=="--help" || $argv[$i]=="-h")
 		{
 			$temp=$i;
@@ -136,33 +148,31 @@ if($gamefield->setGamefield($y,$x)==true)
 	if($epfPManager->hasPluginFor($out)==true)
 	{
 		$output = $epfPManager->getPluginFor($out);
-		if($output->setColor($color)==true && $output->setBgColor($bgcolor)==true)
+		if($output->setParameters($deliverString)==true)
 		{
-			if($output->setMs($speed)==true)
+			if(is_numeric($reps))
 			{
-				if(is_numeric($reps))
+				for($i=0;$i<(int)$reps;$i++)
 				{
-					for($i=0;$i<(int)$reps;$i++)
-					{
-						$output->setCounter($i+1);
-						$output->outputGamefield($gamefield);
-						$simulator->simulation();
-					}
-					$output->finishOutput();
+					$output->setCounter($i+1);
+					$output->outputGamefield($gamefield);
+					$simulator->simulation();
 				}
-				else echo "Invalid argument ".$reps." for repetitions, has to be an integer, check \"--help\" for help";
-
+				$output->finishOutput();
 			}
-			else
-			{
-				echo "Invalid argument ".$speed." for speed, has to be an integer, check \"--help\" for help";
-			}
+			else echo "Invalid argument ".$reps." for repetitions, has to be an integer, check \"--help\" for help";
 		}
+		else
+		{
+			echo "Color not found, check \"php gameoflife.php --help\" for troubleshooting";
+		}
+
 	}
 	else
 	{
 		echo "No output plugin called ".$out." found, please type \"php gameoflife.php --help\" for help";
 	}
+
 }
 else echo $x." for x and/or ".$y." for y are invalid arguments. Check \"--help\" for help."
 ?>
