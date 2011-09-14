@@ -1,6 +1,8 @@
 <?php
 
 include_once "baseoutput.php";
+include_once("./help/logsaver.php");
+require_once("help/validation.php");
 
 /**
  * Gives the simulation process on the console
@@ -10,9 +12,14 @@ include_once "baseoutput.php";
  */
 class output_console extends BaseOutput
 {
+
+	private $logsaver;
+
 	function __construct()
 	{
 		$this->weProvide="console";
+		$this->logsaver = new LogSaver();
+		$this->logsaver->log("Console-output-plugin loaded\n");
 	}
 
 	/**

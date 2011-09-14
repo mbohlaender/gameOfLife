@@ -1,7 +1,7 @@
 <?php
 
 include_once "baseoutput.php";
-
+include_once "./help/logsaver.php";
 
 /**
  * Build jpgs of every simulation step
@@ -14,6 +14,9 @@ class output_jpeg extends baseoutput
 
 	private $name;
 	private $gamefieldArray=null;
+
+	//LogSaver
+	private $logsaver;
 
 	//For picture number
 	private $counter=1;
@@ -36,6 +39,8 @@ class output_jpeg extends baseoutput
 		$this->color[1]=255;
 		$this->color[2]=255;
 		$this->color[3]=255;
+		$this->logsaver= new LogSaver();
+		$this->logsaver->log("Jpeg-output-plugin loaded\n");
 	}
 
 
@@ -49,7 +54,6 @@ class output_jpeg extends baseoutput
 	 */
 	function outputGameField(gameField $_gf)
 	{
-		echo "Test\n";
 		$this->gamefieldArray=$_gf->gameFieldArray();
 		$this->image = @ImageCreate ($_gf->rowsOfGameField()*10,$_gf->columnsOfGameField()*10);
 
@@ -159,29 +163,39 @@ class output_jpeg extends baseoutput
 	{
 		return $this->bgColor;
 	}
-	function setParameters($_deliverString)
+	function setParameters($_ArrayToCheck)
 	{
-		$paraArray=explode(" ",$_deliverString);
-		for($k=0;$k<count($paraArray);$k++)
-		{
-			if($paraArray[$k]=="--bgcolor" || $paraArray[$k]=="-b")
+			foreach($_ArrayToCheck as $opt => $value)
 			{
-				if($this->setBgColor($paraArray[$k+1])==true){}
-				else
+				if($opt=="bgcolor"||$opt=="b")
 				{
-					return false;
+					if($this->setBgColor($value)==true)
+					{
+						$this->logsaver->log($value." was set as color for dead cells.");
+					}
+					else
+					{
+						$this->logsaver->log($value." is no valid color");
+						return false;
+					}
+				}
+				if($opt=="color"||$opt=="c")
+				{
+					if($this->setColor($value)==true)
+					{
+						$this->logsaver->log($value." was set as color for living cells.");
+					}
+					else
+					{
+						$this->logsaver->log($value." is no valid color");
+						return false;
+					}
 				}
 			}
-			if($paraArray[$k]=="--color" || $paraArray[$k]=="-c")
-			{
-				if($this->setColor($paraArray[$k+1])==true){}
-				else
-				{
-					return false;
-				}
-			}
-		}
-		return true;
+			return true;
 	}
+
 }
+
+
 ?>

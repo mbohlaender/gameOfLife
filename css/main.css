@@ -31,6 +31,16 @@ input{
 	margin-left: 4px;
 }
 
+.logfile{
+	float: left;
+	margin-left: 18em;
+	margin-top: 8em;
+	background-color:#000000;
+	color:#FFFFFF;
+	clear:left;
+
+}
+
 select{
 	font-family:Kristen ITC,Comic Sans MS,Arial;
 	background-color:#79CDCD;

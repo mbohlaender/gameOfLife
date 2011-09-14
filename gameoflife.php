@@ -3,17 +3,26 @@
 require_once ("simulator.php");
 require_once ("gamefield.php");
 require_once ("src/epf/epfpluginmanager.php");
+require_once("help/logsaver.php");
+require_once("help/validation.php");
 /**
 * Game of Life.
 *
 * @version $Id$
 * @copyright 2011
 */
-
+$handle = fopen("help/logfiles.txt", "w+");
+fwrite($handle, "");
+fclose($handle);
+$handle = fopen("help/bool.txt", "w+");
+fwrite($handle, "false");
+fclose($handle);
 
 $gamefield = new Gamefield();
 $simulator = new Simulator($gamefield);
 $epfPManager = new epfPluginManager();
+$logsaver= new LogSaver();
+$validater= new Validation();
 
 $in = "txt";
 $out = "gif";
@@ -24,155 +33,148 @@ $y=20;
 $form="blinker";
 $bgcolor="Black";
 $color="White";
-$deliverString="";
+$ArrayToDeliver="";
 
 
-$lines = preg_split("/-/", implode(" ",$argv), -1, PREG_SPLIT_NO_EMPTY);
-$parameterArray = file ("help/parameterlist.txt",FILE_IGNORE_NEW_LINES);
-$counter=1;
-for($z=1;$z<count($lines);$z++)
+$shortopts="";
+$handler = file("help/parameterlist.txt",FILE_IGNORE_NEW_LINES);
+$longopts;
+
+for($w=0;$w<count($handler);$w++)
 {
-	$tempS = explode(" ",$lines[$z]);
-	for($q=0;$q<count($parameterArray);$q++)
-	{
-		if($tempS[0]==$parameterArray[$q]) ;
-		else $counter++;
-	}
-	if($counter!=count($parameterArray))
-	{
-		echo "Parameter ".$tempS[0]." is invalid, will continue with right parameters, check help.\n";
-	}
-	$counter=1;
+	$parameter=explode(" ",$handler[$w]);
+	$shortopts=$shortopts.$parameter[1];
+	$longopts[$w]=$parameter[0];
 }
-if($argc > 1)
+
+$options = getopt($shortopts,$longopts);
+$ArrayToDeliver=$options;
+
+
+foreach($options as $opt => $value)
 {
-	for($i=0;$i<$argc;$i++)
+	if($opt=="form"||$opt=="f")
 	{
-		$deliverString=$deliverString." ".$argv[$i];
+		$form = $value;
+	}
+	if($opt=="in"||$opt=="i")
+	{
+		$in = $value;
+	}
+	if($opt=="out"||$opt=="o")
+	{
+		$out = $value;
+	}
+	if($opt=="width"||$opt=="x")
+	{
+		$x = $value;
+	}
+	if($opt=="height"||$opt=="y")
+	{
+		$y = $value;
+	}
+	if($opt=="reps"||$opt=="r")
+	{
+		$reps = $value;
+	}
+	if($opt=="debug"||$opt=="d")
+	{
+		$handle = fopen("help/bool.txt", "w+");
+		fwrite($handle, "true");
+		fclose($handle);
+	}
+	if($opt=="help" || $opt=="h")
+	{
+		echo "________________________GameOfLife__________________________________________\n";
+		echo "Instead of : or :: you have to type in front of the option - or --\n\n\nOptions:\n\n";
+		for($p=0;$p<count($handler);$p++)
+		{
+			echo $handler[$p]."\n";
+		}
+		$rowArray = file ("color/colors.txt");
+		echo "\nPossible colors: \n________________\n";
+		for($i=0;$i<count($rowArray);$i++)
+		{
+			$tempString = explode(" ",$rowArray[$i]);
+			echo "-".$tempString[0]."\n";
+		}
+		echo "\nPossible forms: \n________________\n";
+		foreach (glob("form/*.txt") as $filename)
+		{
+			$tempA = explode("/",$filename);
+			$tempB = explode(".",$tempA[1]);
+			echo "-".$tempB[0]."\n";
+		}
+		echo "____________________________________________________________________________\n";
+	}
+}
 
-		if($argv[$i] == "--in" || $argv[$i] == "-i")
-		{
-			$in=$argv[$i+1];
-		}
-		if($argv[$i] == "--out" || $argv[$i] == "-o")
-		{
-			$out=$argv[$i+1];
-		}
-		if($argv[$i] == "--width" || $argv[$i] == "-x")
-		{
-			$x=$argv[$i+1];
-		}
-		if($argv[$i] == "--height" || $argv[$i] == "-y")
-		{
-			$y=$argv[$i+1];
-		}
 
-		if($argv[$i] == "--reps" || $argv[$i] == "-r")
-		{
-			$reps=$argv[$i+1];
-		}
-		if($argv[$i]=="--form" || $argv[$i]=="-f")
-		{
-			$form=$argv[$i+1];
-		}
+//Validation_process of reps, width and height
+$validationIntArray= array(
+	"repitations" => $reps,
+	"width" => $x,
+	"height" => $y
+);
+$cA=0;
+foreach($validater->validateInt($validationIntArray) as $var => $value2)
+{
+	$tempArray[$cA]=$value2;
+	$cA++;
+}
+$reps = $tempArray[0];
+$x = $tempArray[1];
+$y = $tempArray[2];
 
+//Build gamefield
 
-		if($argv[$i]=="--help" || $argv[$i]=="-h")
-		{
-			$temp=$i;
-			$rowArray = file ("help/help.txt");
-			for($i=0;$i<count($rowArray);$i++)
-			{
-				echo $rowArray[$i];
+$gamefield->setGamefield($x,$y);
 
-			}
-			$i=$temp;
-			$temp=$i;
-			$rowArray = file ("color/colors.txt");
-			echo "\nPossible colors: \n________________\n";
-			for($i=0;$i<count($rowArray);$i++)
-			{
-				$tempString = explode(" ",$rowArray[$i]);
-				echo "-".$tempString[0]."\n";
-			}
-			$i=$temp;
-			$temp=$i;
-			echo "\nPossible forms: \n________________\n";
-			foreach (glob("form/*.txt") as $filename)
-			{
-				$tempA = explode("/",$filename);
-				$tempB = explode(".",$tempA[1]);
-				echo "-".$tempB[0]."\n";
-			}
-			$i=$temp;
-
-			echo "\n Example code: \n______________\n\"php gameoflife.php --in txt --out gif --speed 10 --width 30 --height 30 --reps 50 --form blinker --b Black -c DeepPink\"";
-		}
+//Input Plugin load
+$epfPManager->loadPluginsOnDemand("input/","input_",".plugin.php","input_");
+if($epfPManager->hasPluginFor($in)==true)
+{
+	$input = $epfPManager->getPluginFor($in);
+	if($input->setParameter($ArrayToDeliver)==true)
+	{
+		$input->readIntoGamefield($gamefield);
 	}
 }
 else
 {
-	echo "No parameters delivered, default parameters will set \n";
-	$in = "txt";
-	$out = "gif";
-	$speed=10;
-	$reps=10;
-	$x=30;
-	$y=20;
-	$form="blinker";
-	$bgcolor="Black";
-	$color="White";
+	$logsaver->log("No input plugin called ".$in." found, please type \"php gameoflife.php --help\" for help");
 }
-if($gamefield->setGamefield($y,$x)==true)
+
+//Output Plugin load
+$epfPManager->loadPluginsOnDemand("output/","output_",".plugin.php","output_");
+if($epfPManager->hasPluginFor($out)==true)
 {
-	$epfPManager->loadPluginsOnDemand("input/","input_",".plugin.php","input_");
-	if($epfPManager->hasPluginFor($in)==true)
+	$output = $epfPManager->getPluginFor($out);
+	if($output->setParameters($ArrayToDeliver)==true)
 	{
-		$input = $epfPManager->getPluginFor($in);
-		if($input->setFilename($form)==true)
+		$logsaver->log($reps." simulation processes will generated");
+		for($i=0;$i<$reps;$i++)
 		{
-			$input->readIntoGamefield($gamefield);
+			$output->setCounter($i+1);
+			$output->outputGamefield($gamefield);
+			$simulator->simulation();
 		}
-		else
-		{
-			echo "Delivered form called ".$form." doesn't exists, check --help";
-		}
-	}
-	else
-	{
-		echo "No input plugin called ".$in." found, please type \"php gameoflife.php --help\" for help";
-	}
-
-	$epfPManager->loadPluginsOnDemand("output/","output_",".plugin.php","output_");
-
-	if($epfPManager->hasPluginFor($out)==true)
-	{
-		$output = $epfPManager->getPluginFor($out);
-		if($output->setParameters($deliverString)==true)
-		{
-			if(is_numeric($reps))
-			{
-				for($i=0;$i<(int)$reps;$i++)
-				{
-					$output->setCounter($i+1);
-					$output->outputGamefield($gamefield);
-					$simulator->simulation();
-				}
-				$output->finishOutput();
-			}
-			else echo "Invalid argument ".$reps." for repetitions, has to be an integer, check \"--help\" for help";
-		}
-		else
-		{
-			echo "Color not found, check \"php gameoflife.php --help\" for troubleshooting";
-		}
-
-	}
-	else
-	{
-		echo "No output plugin called ".$out." found, please type \"php gameoflife.php --help\" for help";
+		$output->finishOutput();
 	}
 
 }
-else echo $x." for x and/or ".$y." for y are invalid arguments. Check \"--help\" for help."
+else
+{
+	$logsaver->log("No output plugin called ".$out." found, please type \"php gameoflife.php --help\" for help");
+}
+
+//
+$txtArray = file ("help/logfiles.txt");
+for($e=0;$e<count($txtArray);$e++)
+{
+	echo $txtArray[$e];
+}
+$handle = fopen("help/bool.txt", "w+");
+fwrite($handle, "false");
+fclose($handle);
 ?>

@@ -1,7 +1,8 @@
 <?php
 
-require_once "baseoutput.php";
-require_once "/gifCreator/dGifAnimator.inc.php";
+require_once ("baseoutput.php");
+require_once ("./gifCreator/dGifAnimator.inc.php");
+require_once ("./help/logsaver.php");
 /**
  * Build animated gif files of the simulation process
  *
@@ -21,11 +22,12 @@ class output_gif extends BaseOutput
 	private $lastMd5;
 	private $color;
 	private $bgColor;
+	private $logsaver;
 
 	function __construct()
 	{
 		$this->weProvide="gif";
-		$this->color[0]="Black";
+		$this->bgColor[0]="Black";
 		$this->bgColor[1]=0;
 		$this->bgColor[2]=0;
 		$this->bgColor[3]=0;
@@ -33,6 +35,9 @@ class output_gif extends BaseOutput
 		$this->color[1]=255;
 		$this->color[2]=255;
 		$this->color[3]=255;
+		$this->ms=10;
+		$this->logsaver= new LogSaver();
+		$this->logsaver->log("Gif-output-plugin loaded\n");
 	}
 
 	public function setMs($_ms)
@@ -40,11 +45,7 @@ class output_gif extends BaseOutput
 		if(is_numeric($_ms))
 		{
 			$this->ms=(int)$_ms;
-			return true;
-		}
-		else
-		{
-			return false;
+			$this->logsaver->log("Delay = ".$this->ms);
 		}
 	}
 	public function getMs()
@@ -120,6 +121,7 @@ class output_gif extends BaseOutput
 		$this->gif = new dGifAnimator;
 		$this->gif->setLoop(0);                         # Loop forever
 		$this->gif->setDefaultConfig('delay_ms', (int)$this->getMs()); # Delay: 10ms
+		$this->logsaver->log("Delay is at ".$this->ms." ms\n");
 		if(isset($_GET['transparent']))
 			$this->gif->setDefaultConfig('transparent_color', 0);
 
@@ -129,7 +131,7 @@ class output_gif extends BaseOutput
 			$this->gif->addFile($this->generated[$x]);
 		}
 		$this->gif->build("gif/".$this->name.".gif");
-
+		$this->logsaver->log("Gif-Animation called ".$this->name." created \n");
 		/** Exclude all frames used to build the final animation **/
 		for($x = 0; $x < sizeof($this->generated); $x++)
 		{
@@ -188,38 +190,48 @@ class output_gif extends BaseOutput
 	{
 		return $this->bgColor;
 	}
-	function setParameters($_deliverString)
+	function setParameters($_ArrayToCheck)
 	{
-		$paraArray=explode(" ",$_deliverString);
-		for($k=0;$k<count($paraArray);$k++)
+		foreach($_ArrayToCheck as $opt => $value)
 		{
-			if($paraArray[$k]=="--bgcolor" || $paraArray[$k]=="-b")
+			if($opt=="bgcolor"||$opt=="b")
 			{
-				if($this->setBgColor($paraArray[$k+1])==true){}
+				if($this->setBgColor($value)==true)
+				{
+					$this->logsaver->log($value." was set as color for dead cells.");
+				}
 				else
 				{
+					$this->logsaver->log($value." is no valid color");
 					return false;
 				}
 			}
-			if($paraArray[$k]=="--color" || $paraArray[$k]=="-c")
+			if($opt=="speed"||$opt=="s")
 			{
-				if($this->setColor($paraArray[$k+1])==true){}
+				if($this->setMs($value)==true)
+				{
+					$this->logsaver->log($value." was set as delay");
+				}
 				else
 				{
+					$this->logsaver->log($value." is no valid int value for delay");
 					return false;
 				}
 			}
-			if($paraArray[$k] == "--speed" || $paraArray[$k] == "-s")
+			if($opt=="color"||$opt=="c")
 			{
-				if($this->setMs($paraArray[$k+1])==true){}
+				if($this->setColor($value)==true)
+				{
+					$this->logsaver->log($value." was set as color for living cells.");
+				}
 				else
 				{
+					$this->logsaver->log($value." is no valid color");
 					return false;
 				}
 			}
 		}
 		return true;
-
 	}
 }
 ?>

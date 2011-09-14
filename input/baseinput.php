@@ -14,6 +14,10 @@ abstract class BaseInput extends epfGenericPlugin
 	abstract function setFilename($_filename);
 	abstract function readIntoGamefield(GameField $_gf);
 
+	function setParameter($_ArrayToCheck)
+	{
+
+	}
 }
 
 ?>

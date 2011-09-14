@@ -78,9 +78,14 @@ class GameField
 					$this->gameFieldArray[$i][$j]=' ';
 				}
 			}
+			$this->log("Gamefield with ".$_column." columns and ".$_row." rows was build.\n");
 			return true;
 		}
-		else return false;
+		else
+		{
+			$this->log("Gamefield with ".$_column." columns and ".$_row." rows couldn't build.\n");
+			return false;
+		}
 	}
 
 	/**
@@ -165,7 +170,16 @@ class GameField
 		return $neighborHoodPlaces;
 	}
 
-
+	public function log($_message)
+	{
+		$tempString=file("help/bool.txt",FILE_IGNORE_NEW_LINES);
+		if($tempString[0]=="true")
+		{
+			$handle = fopen("help/logfiles.txt", "a+");
+			fwrite($handle, "$_message ".date("d/m/Y; H:i:s")."\r\n");
+			fclose($handle);
+		}
+	}
 
 
 

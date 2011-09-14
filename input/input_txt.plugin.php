@@ -1,7 +1,7 @@
 <?php
 
 include_once("baseinput.php");
-
+include_once("./help/logsaver.php");
 /**
  * Read out of a txt file a form for simulation process
  *
@@ -11,11 +11,13 @@ include_once("baseinput.php");
 class input_txt extends baseinput
 {
 	private $gamefield;
-	private $filename;
-
+	private $filename="blinker";
+	private $logsaver;
 	function __construct()
 	{
 		$this->weProvide="txt";
+		$this->logsaver = new LogSaver();
+		$this->logsaver->log("Txt-Input-plugin loaded\n");
 	}
 
 	/**
@@ -33,7 +35,6 @@ class input_txt extends baseinput
 		}
 		else
 		{
-			echo "File doesn't exist, check right name\n";
 			return false;
 		}
 	}
@@ -58,7 +59,25 @@ class input_txt extends baseinput
 
 	}
 
-
+	public function setParameter($_ArrayToCheck)
+	{
+		foreach($_ArrayToCheck as $opt => $value)
+		{
+			if($opt=="form"||$opt=="f")
+			{
+				if($this->setFilename($value)==true)
+				{
+					$this->logsaver->log($value." as form was loaded");
+				}
+				else
+				{
+					$this->logsaver->log($value." is no valid form to load");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
 
 ?>

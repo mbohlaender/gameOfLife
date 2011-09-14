@@ -9,14 +9,22 @@
 	require_once ("simulator.php");
 	require_once ("gamefield.php");
 	require_once ("src/epf/epfpluginmanager.php");
+	require_once ("help/logsaver.php");
+	require_once ("help/validation.php");
+	$handle = fopen("help/logfiles.txt", "w+");
+	fwrite($handle, "");
+	fclose($handle);
+	$handle = fopen("help/bool.txt", "w+");
+	fwrite($handle, "true");
+	fclose($handle);
 
 	$epfPManager = new epfPluginManager();
 	$epfPManager->loadPluginsOnDemand("output/","output_",".plugin.php","output_");
 	$output = $epfPManager->getPluginFor("gif");
 	$epfPManager->loadPluginsOnDemand("input/","input_",".plugin.php","input_");
 	$input = $epfPManager->getPluginFor("txt");
-
-
+	$logsaver= new LogSaver();
+	$validater= new Validation();
 	if(isset($_GET['selectForm'])) $selectForm = $_GET['selectForm'];
 	else $selectForm = "beacon";
 
@@ -76,7 +84,7 @@
 	H&ouml;he y:	<input name="y" type="text" size="3" maxlength="3" value="<?php echo $y ?>" /><br />
 	Anzahl Simulationsprozesse:<br /><input name="sim" type="text" size="3" maxlength="3" value="<?php echo $sim ?>" /><br />
 	Zeit zwischen Prozessen in ms: <br /><input name="ms" type="text" size="3" maxlength="3" value="<?php echo $output->getMs() ?>" /><br />
-	Farbe der lebendigen Zellen::<br />
+	Farbe der lebendigen Zellen:<br />
 	<select name="selectColor" size="1" class="blub">
 		<?php
 			$colorArray = file ("./color/colors.txt");
@@ -99,8 +107,9 @@
 			}
 		?>
     </select><br />
+    <input type="checkbox" name="log" value="log"> Show logfiles<br>
 	<input type="submit" value="send" class="submitButton"/>
-    </form>
+	</form>
 <?php
 
 	$filename="beacon";
@@ -133,18 +142,34 @@
 	{
 		$output->setBgColor( $_GET['selectBgColor']);
 	}
-
+	//Validation Process
+	$validationIntArray= array(
+	"repitations" => $sim,
+	"width" => $x,
+	"height" => $y
+	);
+	$cA=0;
+	foreach($validater->validateInt($validationIntArray) as $var => $value2)
+	{
+		$tempArray[$cA]=$value2;
+		$cA++;
+	}
+	$sim = $tempArray[0];
+	$x = $tempArray[1];
+	$y = $tempArray[2];
 
 	$gamefield = new Gamefield();
 	$simulator = new Simulator($gamefield);
 	$gamefield->setGamefield($y,$x);
 
+	//ReadInput
 	$input->setFilename($filename);
 	$input->readIntoGamefield($gamefield);
 
-	$md5 = md5($x.$y.$output->getColor().$output->getBgColor().$output->getMs().$sim.$filename);
+	$tempBgColor =$output->getBgColor();
+	$tempLcColor =$output->getColor();
+	$md5 = md5($x.$y.$tempLcColor[0].$tempBgColor[0].$output->getMs().$sim.$filename);
 	$output->setName($md5);
-
 	foreach (glob("gif/*.gif") as $filename)
 	{
 		$tempA = explode("/",$filename);
@@ -153,12 +178,14 @@
 		{
 			$gifname=$md5;
 			$bool=true;
+			$logsaver->log($sim." simulation processes will generated ");
 			break;
 		}
 		else $bool=false;
 	}
 	if($bool==false)
 	{
+		$logsaver->log($sim." simulation processes will generated ");
 		for($i=0;$i<$sim;$i++)
 		{
 			if($output->comparison()==true)
@@ -189,5 +216,22 @@
 		<div id="imagecontainer">
 			<img src="gif/<?php echo $gifname ?>.gif" />
 		</div>
+		<?php
+		if(isset ($_GET['log']))
+		{
+
+		?>
+			<textarea name="logfile" cols="50" rows="10" id="logfile" readonly class="logfile"><?php
+				$txtArray = file ("help/logfiles.txt");
+				for($e=0;$e<count($txtArray);$e++)
+				{
+					echo $txtArray[$e];
+				}
+			?>
+			</textarea>
+		<?php
+		}
+		?>
+
 	</body>
 </html>

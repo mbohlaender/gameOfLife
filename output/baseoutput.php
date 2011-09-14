@@ -35,7 +35,7 @@ abstract class BaseOutput extends epfGenericPlugin
 
 	}
 
-	function setParameters($_deliverString)
+	function setParameters($_ArrayCheck)
 	{
 		return true;
 	}
