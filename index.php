@@ -170,6 +170,7 @@
 	$tempLcColor =$output->getColor();
 	$md5 = md5($x.$y.$tempLcColor[0].$tempBgColor[0].$output->getMs().$sim.$filename);
 	$output->setName($md5);
+	$bool =false;
 	foreach (glob("gif/*.gif") as $filename)
 	{
 		$tempA = explode("/",$filename);

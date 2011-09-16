@@ -97,7 +97,7 @@ class output_gif extends BaseOutput
 		$this->generated[] = $randFilename;
 		imagegif($im, $randFilename);
 
-		$md5= md5_file ( $randFilename );
+		$md5= md5_file ( __file__.$randFilename );
 		if($this->lastMd5!="")
 		{
 			if($md5==$this->lastMd5)

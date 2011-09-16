@@ -172,10 +172,10 @@ class GameField
 
 	public function log($_message)
 	{
-		$tempString=file("help/bool.txt",FILE_IGNORE_NEW_LINES);
+		$tempString=file(__dir__."/help/bool.txt",FILE_IGNORE_NEW_LINES);
 		if($tempString[0]=="true")
 		{
-			$handle = fopen("help/logfiles.txt", "a+");
+			$handle = fopen(__dir__."/help/logfiles.txt", "a+");
 			fwrite($handle, "$_message ".date("d/m/Y; H:i:s")."\r\n");
 			fclose($handle);
 		}
